@@ -5,9 +5,75 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+.items-page {
+  height: 600px;
+  width: 600px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.list-item {
+  display: flex;
+  height: 120px;
+  width: 400px;
+  justify-content: center;
+  padding:10px;
+}
+
+.list-item-info {
+  background: white;
+  outline-style: solid;
+  display: flex;
+  height: 100%;
+  width: 60%;
+  flex-direction: column;
+  justify-content: center;
+  text-align: start;
+  padding-left: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: .1s;
+}
+
+.list-item-info:hover {
+  background: rgb(184, 184, 184);
+}
+
+.list-item-name {
+  font-size: 30px;
+  font-weight: bold;
+}
+
+.list-item-pricetag {
+  background: white;
+  outline-style: solid;
+  display: flex;
+  height: 70%;
+  width: 40%;
+  flex-direction: column;
+  justify-content: center;
+  text-align: start;
+  padding-left: 10px;
+  z-index: -1;
+  border-radius: 0px 5px 5px 0px;
+}
+
+.list-item-start {
+  font-size: 30px;
+  font-weight: bold;
 }

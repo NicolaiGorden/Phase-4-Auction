@@ -8,6 +8,8 @@
 
 #USERS
 User.create(username: "Riser", password: "Lives2Hunt")
+User.create(username: "Aurora", password: "Chocolates")
+User.create(username: "Pin", password: "Robotsrule")
 
 #ITEMS
 Item.create(name: "Really Cool Bass", start_price: 120.00)

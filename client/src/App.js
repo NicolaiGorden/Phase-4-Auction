@@ -2,6 +2,7 @@ import './App.css';
 import { useState, useEffect, createContext } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Gate from './Components/Gate';
+import Items from './Components/Items';
 
 export const LoginContext = createContext();
 
@@ -19,12 +20,19 @@ function App() {
     })
   }, [])
 
+  if(!user) return (
+    <LoginContext.Provider value={[user, setUser]}>
+      <Gate/>
+    </LoginContext.Provider>
+  )
+
   return (
     <LoginContext.Provider value={[user, setUser]}>
       <BrowserRouter>
         <div className="App">
           <Routes>
-            <Route path="/" element={<Gate/>}/>
+            <Route path="/" element={<Items/>}/>
+            <Route path="/login" element={<Gate/>}/>
           </Routes>
         </div>
       </BrowserRouter>
