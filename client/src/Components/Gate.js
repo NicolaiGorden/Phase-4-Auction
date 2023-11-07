@@ -14,6 +14,8 @@ function Gate() {
         e.preventDefault()
         setErrors([])
         setSignup(!signup)
+        setUsername('')
+        setPassword('')
     }
 
     function onLoginSubmit(e) {
@@ -67,7 +69,13 @@ function Gate() {
 
     return (
         <div>
-            {errors ? errors.map((e) => <div>{e}</div>) : undefined}
+            {errors ? errors.map((e) => {
+                if (e !== "Password confirmation doesn't match Password") {
+                    return <div>{e}</div>
+                } else {
+                    return <div>Passwords do not match!</div>
+                }
+            }) : undefined}
 
             {signup ? 
                 <form onSubmit={onLoginSubmit}>

@@ -7,7 +7,7 @@ class User < ApplicationRecord
     def must_contain_uppercase
         if password != nil
             unless password.match(/[[:upper:]]/)
-                errors.add(:password, message: "must contain uppercase character!")
+                errors.add(:password, message: "must contain an uppercase character!")
             end
         end
     end
