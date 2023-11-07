@@ -6,7 +6,8 @@ function Gate() {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [passwordConfirmation, setPasswordConfirmation] = useState('')
-    const [errors, setErrors] = useState('')
+    const [errors, setErrors] = useState([])
+
 
     function onLoginSubmit(e) {
         e.preventDefault()
@@ -24,25 +25,42 @@ function Gate() {
             if(res.ok){
                 res.json().then((user) => setUser(user))
             } else {
-                res.json().then((err) => console.log(err))
+                res.json().then((err) => setErrors([err.error.login]))
             }
         })
     }
 
     function onSignupSubmit(e) {
         e.preventDefault()
+        const userCreds = {
+            username,
+            password,
+            password_confirmation: passwordConfirmation,
+        }
+        fetch('/users', {
+            method: "POST",
+            headers: {'Content-Type':'application/json'},
+            body:JSON.stringify(userCreds)
+        })
+        .then(res => {
+            if(res.ok){
+                res.json().then(console.log(res))
+            } else {
+                res.json().then((err) => setErrors(err.errors))
+            }
+        })
     }
 
     function onLogout(e) {
         e.preventDefault()
         fetch("/logout", {
             method: "DELETE",
-        })
+        }).then(setUser(''))
     } 
 
     return (
         <div>
-            <div>{errors}</div>
+            {errors ? errors.map((e) => <div>{e}</div>) : undefined}
             <form onSubmit={onLoginSubmit}>
                 <input
                     placeholder ="Username"
