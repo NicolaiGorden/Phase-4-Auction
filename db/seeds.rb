@@ -8,3 +8,6 @@
 
 #USERS
 User.create(username: "Riser", password: "Lives2Hunt")
+
+#ITEMS
+Item.create(name: "Really Cool Bass", start_price: 120.00, highest_bid: 120.00)
