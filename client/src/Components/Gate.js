@@ -16,6 +16,7 @@ function Gate() {
         setSignup(!signup)
         setUsername('')
         setPassword('')
+        setPasswordConfirmation('')
     }
 
     function onLoginSubmit(e) {
