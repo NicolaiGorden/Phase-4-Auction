@@ -2,12 +2,19 @@ import React, { useState, useEffect, useContext } from 'react';
 import { LoginContext } from '../App';
 
 function Gate() {
+    const [signup, setSignup] = useState(false)
     const [user, setUser] = useContext(LoginContext)
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [passwordConfirmation, setPasswordConfirmation] = useState('')
     const [errors, setErrors] = useState([])
 
+
+    function signupToggle(e) {
+        e.preventDefault()
+        setErrors([])
+        setSignup(!signup)
+    }
 
     function onLoginSubmit(e) {
         e.preventDefault()
@@ -61,24 +68,29 @@ function Gate() {
     return (
         <div>
             {errors ? errors.map((e) => <div>{e}</div>) : undefined}
-            <form onSubmit={onLoginSubmit}>
-                <input
-                    placeholder ="Username"
-                    type="Text"
-                    id="username"
-                    value={username}
-                    onChange={(e)=>setUsername(e.target.value)}
-                />
-                <input
-                    placeholder ="Password"
-                    type="password"
-                    id="password"
-                    value={password}
-                    onChange={(e)=>setPassword(e.target.value)}
-                />
-                <button type="submit" name="Log In">Log In</button>
-            </form>
+
+            {signup ? 
+                <form onSubmit={onLoginSubmit}>
+                    <label>Log In: </label>
+                    <input
+                        placeholder ="Username"
+                        type="Text"
+                        id="username"
+                        value={username}
+                        onChange={(e)=>setUsername(e.target.value)}
+                    />
+                    <input
+                        placeholder ="Password"
+                        type="password"
+                        id="password"
+                        value={password}
+                        onChange={(e)=>setPassword(e.target.value)}
+                    />
+                    <button type="submit" name="Log In">Log In</button>
+                </form>
+            :
             <form onSubmit={onSignupSubmit}>
+                <label>Sign Up: </label>
                 <input
                     placeholder ="Username"
                     type="Text"
@@ -102,7 +114,10 @@ function Gate() {
                 />
                 <button type="submit" name="Log In">Sign Up</button>
             </form>
-            <button onClick={onLogout}>Log Out</button>
+            }
+            <div>{signup ? "No account?" : "Have an account?"}</div>
+            <button onClick={signupToggle}>Click here!</button>
+            {user ? <button onClick={onLogout}>Log Out</button> : undefined}
         </div>
     )
 }
