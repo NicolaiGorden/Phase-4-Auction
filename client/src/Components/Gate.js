@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import { LoginContext } from '../App';
 
 function Gate() {
+    const [user, setUser] = useContext(LoginContext)
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [passwordConfirmation, setPasswordConfirmation] = useState('')
@@ -20,7 +22,7 @@ function Gate() {
         })
         .then(res => {
             if(res.ok){
-                res.json().then((user) => console.log(user))
+                res.json().then((user) => setUser(user))
             } else {
                 res.json().then((err) => console.log(err))
             }
