@@ -11,7 +11,7 @@ function Items() {
         <div class="items-page">
             <h2>To bid, click an item.</h2>
             <div>You can also <Link to="/newitem">create a new auction here</Link></div>
-            {itemList.map(item => {
+            {itemList?.map(item => {
                  return <Item
                     id={item.id}
                     name={item.name}

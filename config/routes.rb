@@ -13,7 +13,7 @@ Rails.application.routes.draw do
   resources :items, only: [:index, :create, :show]
 
   #BIDS
-  resources :bids, only: [:index, :create, :show]
+  resources :bids, only: [:index, :create, :show, :destroy]
 
   get '*path',
     to: 'fallback#index',
