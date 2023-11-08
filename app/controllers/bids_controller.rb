@@ -1,5 +1,5 @@
 class BidsController < ApplicationController
-    skip_before_action :authorized, only: [:index, :show, :create]
+    skip_before_action :authorized, only: [:index, :show, :create, :destroy]
 
     def index
         bids = Bid.all

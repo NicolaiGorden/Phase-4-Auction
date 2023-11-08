@@ -5,7 +5,7 @@ class ItemSerializer < ActiveModel::Serializer
   has_many :users, through: :bids
 
   def highest_bid
-      if self.object.bids
+      if self.object.bids.length > 0
         self.object.bids.map{|bid| bid.amount}.max()
       else
         self.object.start_price

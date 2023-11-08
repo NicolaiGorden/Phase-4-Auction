@@ -17,6 +17,7 @@ function Items() {
                     name={item.name}
                     start={item.start_price}
                     bids={item.bids}
+                    highest={item.highest_bid}
                 />
             })}
         </div>

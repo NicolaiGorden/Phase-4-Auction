@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { LoginContext } from '../App';
+import { ItemContext } from '../App';
 
 function Bid({id, amount, userId, itemId, name, onBidDelete}) {
     const [user, setUser] = useContext(LoginContext)
-    
+    const [itemList, setItemList] = useContext(ItemContext)
+   
     return (
         <div class="bid">
             <div class="bid-info">
@@ -18,6 +20,14 @@ function Bid({id, amount, userId, itemId, name, onBidDelete}) {
                     <button onClick={(e) => {
                         e.preventDefault()
                         onBidDelete(id)
+                        let listCopy = [...itemList]
+                        console.log(listCopy)
+                        let item = {...listCopy.find(i => i.id == itemId)}
+                        let itemIndex = listCopy.findIndex(i => i.id == itemId)
+                        item.bids = itemList.find(i => i.id == itemId).bids?.filter(bid => bid.id !== id)
+                        item.users = itemList.find(i => i.id == itemId).users?.filter(u => u.id !== user.id)
+                        listCopy[itemIndex] = item
+                        setItemList(listCopy)
                     }}>Delete Bid</button> 
                 </div>
                 : 

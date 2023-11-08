@@ -16,16 +16,15 @@ function ItemPage(props) {
         style: 'currency',
         currency: 'USD',
     });
+    const [newBid, setNewBid] = useState('')
 
     // NEW BID Form
     const [amount, setAmount] = useState('')
 
     function onBidDelete(key) {
-        console.log(key)
-        // fetch(`http://localhost:3000/bids/${key}`, {
-        //     method: "DELETE",
-        // })
-        // .then((data) => console.log(data))
+        fetch(`/bids/${key}`, {
+            method: "DELETE",
+        })
     }
 
     function onBidSubmit(e) {
@@ -43,7 +42,19 @@ function ItemPage(props) {
         })
         .then(res => {
             if(res.ok){
-                res.json().then((bid) => console.log(bid))
+                res.json().then((bid) => {
+                    setNewBid(bid)
+                    let listCopy = [...itemList]
+                    console.log(listCopy)
+                    let item = {...listCopy.find(i => i.id == id)}
+                    let itemIndex = listCopy.findIndex(i => i.id == id)
+                    console.log(item)
+                    console.log(itemIndex)
+                    item.bids = item.bids.push(bid)
+                    item.users = item.users.push(user)
+                    listCopy[itemIndex] = item
+
+                })
             } else {
                 res.json().then((err) => setErrors(err.errors))
             }
@@ -53,7 +64,7 @@ function ItemPage(props) {
     useEffect(()=>{
         setItem(itemList.find(i => i.id == id))
         setErrors([])
-    }, [])
+    }, [itemList])
 
     
     return (
@@ -83,10 +94,18 @@ function ItemPage(props) {
                     />
                     <button type="submit">Post Bid</button>
                 </form>
-                {errors ? errors.map((e) =><div>{e}</div>) : undefined}
+                {errors ? errors.map((e) =>{
+                if (e === 'User already bid!') {
+                    return <div>-You are already part of this auction.</div>
+                } else
+                    return <div>-{e}</div>
+                }
+                ) : undefined}
             </div>
             <div class="bid-list">
-                {itemList?.find(i => i.id == id).bids?.map((e)=> {
+                {/* {(itemList.find(i => i.id == id).bids?.length > 0) ? */}               
+                {itemList ? 
+                itemList.find(i => i.id == id).bids.map((e)=> {
                     return <Bid
                         key={e.id}
                         id={e.id}
@@ -96,7 +115,10 @@ function ItemPage(props) {
                         name={item.users?.find(i => i.id === e.user_id).username}
                         onBidDelete={onBidDelete}
                     />
-                })}
+                })
+                :
+                null
+                }
             </div>
         </div>
     )

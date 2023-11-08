@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-function Item({id, name, start, bids}) {
+function Item({id, name, start, bids, highest}) {
     const navigate = useNavigate();
 
     function onItemClick(e) {
@@ -17,7 +17,7 @@ function Item({id, name, start, bids}) {
             </div>
             <div class="list-item-pricetag">
                 <label>Current Bid:</label>
-                <div class="list-item-start">$120.00</div>
+                <div class="list-item-start">${highest}</div>
                 <div class="list-item-mini">(started at ${start})</div>
             </div>
         </div>
