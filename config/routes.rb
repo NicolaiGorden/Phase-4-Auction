@@ -12,6 +12,9 @@ Rails.application.routes.draw do
   #ITEMS
   resources :items, only: [:index, :create, :show]
 
+  #BIDS
+  resources :bids, only: [:index, :create, :show]
+
   get '*path',
     to: 'fallback#index',
     constraints: ->(req) { !req.xhr? && req.format.html? }
