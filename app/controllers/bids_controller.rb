@@ -1,5 +1,5 @@
 class BidsController < ApplicationController
-    skip_before_action :authorized, only: [:index, :show, :create, :destroy]
+    skip_before_action :authorized, only: [:index, :show, :create, :destroy, :update]
 
     def index
         bids = Bid.all
@@ -22,6 +22,16 @@ class BidsController < ApplicationController
             head :no_content
         else 
             render json: { error: "bid not found"}, status: :not_found
+        end
+    end
+
+    def update
+        bid = Bid.find_by(id: params[:id])
+        if bid
+            bid.update(bid_params)
+            render json: bid
+        else
+            render json: {error: "Bid not found"}, status: :not_found
         end
     end
 

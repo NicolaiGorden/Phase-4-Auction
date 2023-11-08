@@ -7,12 +7,17 @@ function Items() {
 
     const [itemList, setItemList] = useContext(ItemContext)
 
+    useEffect(() => {
+        console.log('listchange')
+    }, [itemList])
+
     return (
         <div class="items-page">
             <h2>To join an auction, click an item.</h2>
             <div>You can also <Link to="/newitem">create a new auction here</Link></div>
             {itemList?.map(item => {
                  return <Item
+                    key={item.id}
                     id={item.id}
                     name={item.name}
                     start={item.start_price}

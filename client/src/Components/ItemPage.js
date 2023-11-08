@@ -16,7 +16,6 @@ function ItemPage(props) {
         style: 'currency',
         currency: 'USD',
     });
-    const [newBid, setNewBid] = useState('')
     const [highestBid, setHighestBid] = useState('')
 
     // NEW BID Form
@@ -44,7 +43,6 @@ function ItemPage(props) {
         .then(res => {
             if(res.ok){
                 res.json().then((bid) => {
-                    setNewBid(bid)
                     setHighestBid((bid.amount))
                     let listCopy = [...itemList]
                     let item = {...listCopy.find(i => i.id == id)}
@@ -61,15 +59,13 @@ function ItemPage(props) {
         })
     }
 
-    useEffect(()=> {
-        setHighestBid(item?.highest_bid)
-    }, [])
+
     
     useEffect(()=>{
         setHighestBid(item?.highest_bid)
         setItem(itemList.find(i => i.id == id))
         setErrors([])
-    }, [itemList])
+    }, [itemList, item])
 
     
     return (

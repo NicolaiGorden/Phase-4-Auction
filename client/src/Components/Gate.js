@@ -61,13 +61,6 @@ function Gate() {
         })
     }
 
-    function onLogout(e) {
-        e.preventDefault()
-        fetch("/logout", {
-            method: "DELETE",
-        }).then(setUser(''))
-    } 
-
     return (
         <div>
             {errors ? errors.map((e) => {
@@ -126,7 +119,6 @@ function Gate() {
             }
             <div>{signup ? "No account?" : "Have an account?"}</div>
             <button onClick={signupToggle}>Click here!</button>
-            {user ? <button onClick={onLogout}>Log Out</button> : undefined}
         </div>
     )
 }

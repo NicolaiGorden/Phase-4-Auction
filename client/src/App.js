@@ -5,6 +5,7 @@ import Gate from './Components/Gate';
 import Items from './Components/Items';
 import ItemForm from './Components/ItemForm';
 import ItemPage from './Components/ItemPage';
+import Navbar from './Components/Navbar';
 
 export const LoginContext = createContext();
 export const ItemContext = createContext();
@@ -21,7 +22,7 @@ function App() {
         }
     })
 
-  }, [])
+  }, [user])
 
   useEffect(() => {
     fetch("/me").then((response) => {
@@ -44,6 +45,7 @@ function App() {
       <LoginContext.Provider value={[user, setUser]}>
         <BrowserRouter>
           <div className="App">
+            <Navbar/>
             <Routes>
               <Route path="/" element={<Items/>}/>
               <Route path="/login" element={<Gate/>}/>
