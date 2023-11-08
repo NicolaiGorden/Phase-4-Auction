@@ -3,6 +3,7 @@ import { useState, useEffect, createContext } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Gate from './Components/Gate';
 import Items from './Components/Items';
+import ItemForm from './Components/ItemForm';
 
 export const LoginContext = createContext();
 
@@ -33,6 +34,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Items/>}/>
             <Route path="/login" element={<Gate/>}/>
+            <Route path="/newitem" element={<ItemForm/>}/>
           </Routes>
         </div>
       </BrowserRouter>
