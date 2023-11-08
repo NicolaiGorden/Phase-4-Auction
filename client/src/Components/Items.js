@@ -1,19 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
+import { ItemContext } from '../App';
 import Item from './Item';
 
 function Items() {
 
-    const [itemList, setItemList] = useState([])
-
-    useEffect(() => {
-        fetch('/items').then((res) => {
-            if (res.ok) {
-                res.json().then((res) => setItemList(res))
-            }
-        })
-
-    }, [])
+    const [itemList, setItemList] = useContext(ItemContext)
 
     return (
         <div class="items-page">
@@ -24,6 +16,7 @@ function Items() {
                     id={item.id}
                     name={item.name}
                     start={item.start_price}
+                    bids={item.bids}
                 />
             })}
         </div>

@@ -4,12 +4,24 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Gate from './Components/Gate';
 import Items from './Components/Items';
 import ItemForm from './Components/ItemForm';
+import ItemPage from './Components/ItemPage';
 
 export const LoginContext = createContext();
+export const ItemContext = createContext();
 
 function App() {
 
   const [user, setUser] =useState('')
+  const [itemList, setItemList] = useState([])
+
+  useEffect(() => {
+    fetch('/items').then((res) => {
+        if (res.ok) {
+            res.json().then((res) => setItemList(res))
+        }
+    })
+
+  }, [])
 
   useEffect(() => {
     fetch("/me").then((response) => {
@@ -28,17 +40,20 @@ function App() {
   )
 
   return (
-    <LoginContext.Provider value={[user, setUser]}>
-      <BrowserRouter>
-        <div className="App">
-          <Routes>
-            <Route path="/" element={<Items/>}/>
-            <Route path="/login" element={<Gate/>}/>
-            <Route path="/newitem" element={<ItemForm/>}/>
-          </Routes>
-        </div>
-      </BrowserRouter>
-    </LoginContext.Provider>
+    <ItemContext.Provider value={[itemList, setItemList]}>
+      <LoginContext.Provider value={[user, setUser]}>
+        <BrowserRouter>
+          <div className="App">
+            <Routes>
+              <Route path="/" element={<Items/>}/>
+              <Route path="/login" element={<Gate/>}/>
+              <Route path="/newitem" element={<ItemForm/>}/>
+              <Route path="/item/:id" element={<ItemPage/>}/>
+            </Routes>
+          </div>
+        </BrowserRouter>
+      </LoginContext.Provider>
+    </ItemContext.Provider>
   );
 }
 
