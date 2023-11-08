@@ -1,5 +1,4 @@
 class BidsController < ApplicationController
-    skip_before_action :authorized, only: [:index, :show, :create, :destroy, :update]
 
     def index
         bids = Bid.all
@@ -11,6 +10,7 @@ class BidsController < ApplicationController
         if bid.valid?
             render json: bid, status: :created
         else
+            
             render json: { errors: bid.errors.full_messages }, status: :unprocessable_entity
         end
     end
