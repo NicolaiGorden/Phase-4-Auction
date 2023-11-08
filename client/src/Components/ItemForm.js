@@ -69,7 +69,7 @@ function ItemForm() {
                     placeholder='0.00'
                     type="number" 
                     min="1" 
-                    step="any"
+                    ste="any"
                     value={startPrice}
                     onChange={(e)=> {
                         setStartPrice(formatter.format(e.target.value).replace(/\$/g, ''))

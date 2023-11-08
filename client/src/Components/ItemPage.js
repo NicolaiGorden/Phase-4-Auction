@@ -1,13 +1,15 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { ItemContext } from '../App';
 import { LoginContext } from '../App';
-import { Form, useParams } from 'react-router-dom';
+import { MyItemsContext } from '../App';
+import { useParams } from 'react-router-dom';
 import Bid from './Bid';
 
 
 function ItemPage(props) {
 
     const { id } = useParams()
+    const [userList, setUserList] = useState([])
     const [itemList, setItemList] = useContext(ItemContext)
     const [user, setUser] = useContext(LoginContext)
     const [errors, setErrors] = useState([])
@@ -16,11 +18,17 @@ function ItemPage(props) {
         style: 'currency',
         currency: 'USD',
     });
-    const [newBid, setNewBid] = useState('')
-    const [highestBid, setHighestBid] = useState('')
 
     // NEW BID Form
     const [amount, setAmount] = useState('')
+
+    useEffect(() => {
+        fetch('/users').then((res) => {
+            if (res.ok) {
+                res.json().then((res) => setUserList(res))
+            }
+        })
+    }, [])
 
     function onBidDelete(key) {
         fetch(`/bids/${key}`, {
@@ -44,27 +52,25 @@ function ItemPage(props) {
         .then(res => {
             if(res.ok){
                 res.json().then((bid) => {
-                    setNewBid(bid)
-                    setHighestBid((bid.amount))
-                    let listCopy = [...itemList]
-                    let item = {...listCopy.find(i => i.id == id)}
-                    let itemIndex = listCopy.findIndex(i => i.id == id)
-                    console.log(listCopy)
-                    item.bids = item.bids.push(bid)
-                    item.users = item.users.push(user)
-                    item.highest_bid= amount
-                    listCopy[itemIndex] = item                    
+                    let itemCopy = {...item}
+                    itemCopy.bids = [...itemCopy.bids, bid]
+                    itemCopy.highest_bid = bid.amount
+                    let listCopy = itemList.map((it) => {
+                        if (it.id === itemCopy.id) {
+                            return itemCopy
+                        } else {
+                            return it
+                        }
+                    })
+                    setItemList(listCopy)
                 })
             } else {
                 res.json().then((err) => setErrors(err.errors))
             }
         })
     }
-
-
     
     useEffect(()=>{
-        setHighestBid(item?.highest_bid)
         setItem(itemList.find(i => i.id == id))
         setErrors([])
     }, [itemList, item])
@@ -78,7 +84,7 @@ function ItemPage(props) {
                     <div class="list-item-name">{item?.name}</div>
                     <div class="auction-highest">
                         <div class="list-item-mini">highest bid:</div>
-                        <div class="auction-item-price">${highestBid}</div>
+                        <div class="auction-item-price">${item?.highest_bid < 0 || item?.highest_bid == 1 ? item?.start_price : item?.highest_bid}</div>
                     </div>
                 </div>
             </div>
@@ -108,15 +114,17 @@ function ItemPage(props) {
             <div class="bid-list">
                 {/* {(itemList.find(i => i.id == id).bids?.length > 0) ? */}               
                 {(itemList.length > 0 && item) ? 
-                itemList.find(i => i.id == id).bids.map((e)=> {
+                item.bids.map((e)=> {
+
                     return <Bid
+                        item={item}
                         key={e.id}
                         id={e.id}
                         amount={e.amount}
                         userId={e.user_id}
-                        itemId={e.item_id}
-                        name={item.users?.find(i => i.id === e.user_id).username}
+                        itemId={item.id}
                         onBidDelete={onBidDelete}
+                        name={item?.users.find(i => i.id === e.user_id).username}
                     />
                 })
                 :

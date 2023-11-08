@@ -2,7 +2,7 @@ class ItemSerializer < ActiveModel::Serializer
   attributes :id, :name, :start_price, :highest_bid
 
   has_many :bids
-  has_many :users, through: :bids
+  has_many :users
 
   def highest_bid
       if self.object.bids.length > 0

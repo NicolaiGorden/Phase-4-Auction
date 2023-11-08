@@ -6,14 +6,17 @@ import Items from './Components/Items';
 import ItemForm from './Components/ItemForm';
 import ItemPage from './Components/ItemPage';
 import Navbar from './Components/Navbar';
+import UserPage from './Components/UserPage';
 
 export const LoginContext = createContext();
 export const ItemContext = createContext();
+export const MyItemsContext = createContext();
 
 function App() {
 
   const [user, setUser] =useState('')
   const [itemList, setItemList] = useState([])
+  const [myItems, setMyItems] = useState([])
 
   useEffect(() => {
     fetch('/items').then((res) => {
@@ -29,6 +32,7 @@ function App() {
       if (response.ok) {
         response.json().then((user) => {
           setUser(user)
+          setMyItems(user.items)
         })
       }
     })
@@ -41,21 +45,24 @@ function App() {
   )
 
   return (
-    <ItemContext.Provider value={[itemList, setItemList]}>
-      <LoginContext.Provider value={[user, setUser]}>
-        <BrowserRouter>
-          <div className="App">
-            <Navbar/>
-            <Routes>
-              <Route path="/" element={<Items/>}/>
-              <Route path="/login" element={<Gate/>}/>
-              <Route path="/newitem" element={<ItemForm/>}/>
-              <Route path="/item/:id" element={<ItemPage/>}/>
-            </Routes>
-          </div>
-        </BrowserRouter>
-      </LoginContext.Provider>
-    </ItemContext.Provider>
+    <MyItemsContext.Provider value={[myItems, setMyItems]}>
+      <ItemContext.Provider value={[itemList, setItemList]}>
+        <LoginContext.Provider value={[user, setUser]}>
+          <BrowserRouter>
+            <div className="App">
+              <Navbar/>
+              <Routes>
+                <Route path="/" element={<Items/>}/>
+                <Route path="/login" element={<Gate/>}/>
+                <Route path="/newitem" element={<ItemForm/>}/>
+                <Route path="/item/:id" element={<ItemPage/>}/>
+                <Route path="/myauctions" element={<UserPage/>}/>
+              </Routes>
+            </div>
+          </BrowserRouter>
+        </LoginContext.Provider>
+      </ItemContext.Provider>
+    </MyItemsContext.Provider>
   );
 }
 

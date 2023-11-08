@@ -23,6 +23,11 @@ function Navbar() {
         navigate('/newitem')
     }
 
+    function handleUserPage(e){
+        e.preventDefault()
+        navigate('/myauctions')
+    }
+
     if (!user) {
         return (
             <div class="nav-wrapper">
@@ -35,6 +40,7 @@ function Navbar() {
                 <button onClick={onLogout}> Log Out </button>
                 <button onClick={handleAuction}> All Auctions </button>
                 <button onClick={handleCreateTab}>New Auction</button>
+                <button onClick={handleUserPage}>My Auctions</button>
             </div>
         )
     }

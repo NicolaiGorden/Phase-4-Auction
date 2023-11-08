@@ -1,20 +1,24 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { LoginContext } from '../App';
 import { ItemContext } from '../App';
+import { MyItemsContext } from '../App';
 
-function Bid({id, amount, userId, itemId, name, onBidDelete}) {
+function Bid({id, amount, userId, itemId, onBidDelete, item, name}) {
     const [user, setUser] = useContext(LoginContext)
     const [itemList, setItemList] = useContext(ItemContext)
     const [editMode, setEditMode] = useState(false)
     const [errors, setErrors] = useState([])
-    const [amountUpdate, setAmountUpdate] = useState('')
-    const [bidAmount, setBidAmount] = useState(amount)
+    const [amountUpdate, setAmountUpdate] = useState(amount)
 
     const formatter = new Intl.NumberFormat('en-US', {
         style: 'currency',
         currency: 'USD',
     });
    
+    useEffect(() => {
+        console.log(itemList.filter(bid => bid.id === itemId))
+    }, [])
+
     function handleEditMode(e) {
         e.preventDefault()
         setEditMode(!editMode)
@@ -35,7 +39,21 @@ function Bid({id, amount, userId, itemId, name, onBidDelete}) {
             if (res.ok) {
                 res.json().then(data => {
                     setEditMode(!editMode)
-                    setBidAmount(amountUpdate)
+                    let itemCopy = {...item}
+                    itemCopy.bids = item.bids.filter(bid => bid.id !== id)
+                    itemCopy.bids = [...itemCopy.bids, data]
+                    if (data.amount > itemCopy.highest_bid) {
+                        itemCopy.highest_bid = data.amount
+                    }
+                    let listCopy = itemList.map((it) => {
+                        if (it.id === itemCopy.id) {
+                            return itemCopy
+                        } else {
+                            return it
+                        }
+                    })
+                    setItemList(listCopy)
+
                 })
             } else {
                 res.json().then((err) => setErrors(err.errors))
@@ -50,7 +68,6 @@ function Bid({id, amount, userId, itemId, name, onBidDelete}) {
                 <div class={user.id === userId ? "bid-amount-yours" : "bid-amount"}>
                     {editMode ?
                     <input 
-                        placeholder='0.00'
                         type="number" 
                         min="1" 
                         step="any"
@@ -60,7 +77,7 @@ function Bid({id, amount, userId, itemId, name, onBidDelete}) {
                         }}
                     /> 
                     : 
-                        `$${bidAmount}`
+                        `$${amount}`
                     }
                 </div>
             </div>
@@ -73,13 +90,16 @@ function Bid({id, amount, userId, itemId, name, onBidDelete}) {
                         <button onClick={(e) => {
                             e.preventDefault()
                             onBidDelete(id)
-                            let listCopy = [...itemList]
-                            console.log(listCopy)
-                            let item = {...listCopy.find(i => i.id == itemId)}
-                            let itemIndex = listCopy.findIndex(i => i.id == itemId)
-                            item.bids = itemList.find(i => i.id == itemId).bids?.filter(bid => bid.id !== id)
-                            item.users = itemList.find(i => i.id == itemId).users?.filter(u => u.id !== user.id)
-                            listCopy[itemIndex] = item
+                            let itemCopy = {...item}
+                            itemCopy.bids = item.bids.filter(bid => bid.id !== id)
+                            itemCopy.highest_bid = (Math.max(...itemCopy.bids.map((it) => it.amount)))
+                            let listCopy = itemList.map((it) => {
+                                if (it.id === itemCopy.id) {
+                                    return itemCopy
+                                } else {
+                                    return it
+                                }
+                            })
                             setItemList(listCopy)
                         }}>Delete Bid</button> 
                     : 

@@ -22,7 +22,7 @@ function Items() {
                     name={item.name}
                     start={item.start_price}
                     bids={item.bids}
-                    highest={item.highest_bid}
+                    highest={item?.highest_bid < 0 || item?.highest_bid == 1 ? item?.start_price : item?.highest_bid}
                 />
             })}
         </div>
