@@ -54,7 +54,13 @@ function Gate() {
         })
         .then(res => {
             if(res.ok){
-                res.json().then(console.log(res))
+                res.json().then(
+                    setErrors([]),
+                    setSignup(!signup),
+                    setUsername(''),
+                    setPassword(''),
+                    setPasswordConfirmation('')
+                )
             } else {
                 res.json().then((err) => setErrors(err.errors))
             }
