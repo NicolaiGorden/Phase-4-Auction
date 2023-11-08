@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { ItemContext } from '../App';
 
 function ItemForm() {
 
@@ -11,6 +12,7 @@ function ItemForm() {
         style: 'currency',
         currency: 'USD',
     });
+    const [itemList, setItemList] = useContext(ItemContext)
       
     
     function onItemSubmit(e) {
@@ -27,8 +29,16 @@ function ItemForm() {
         })
         .then(res => {
             if(res.ok){
-                res.json().then((item) => console.log(item))
-                navigate('/')
+                res.json().then((item) => {
+                    console.log(item)
+                    let listCopy = itemList
+                    listCopy.push(item)
+                    console.log(listCopy)
+                    setItemList(listCopy)
+                })
+                setTimeout(() => {
+                    navigate('/');
+                  }, "1000");
             } else {
                 res.json().then((err) => setErrors(err.errors))
             }

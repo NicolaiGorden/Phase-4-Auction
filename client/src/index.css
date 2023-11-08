@@ -31,8 +31,10 @@ code {
 
 .list-item {
   display: flex;
-  height: 190px;
-  width: 500px;
+  max-height: 190px;
+  max-width: 500px;
+  min-height: 190px;
+  min-width: 500px;
   justify-content: center;
   padding:10px;
 }

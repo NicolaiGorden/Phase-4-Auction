@@ -9,7 +9,7 @@ function Items() {
 
     return (
         <div class="items-page">
-            <h2>To bid, click an item.</h2>
+            <h2>To join an auction, click an item.</h2>
             <div>You can also <Link to="/newitem">create a new auction here</Link></div>
             {itemList?.map(item => {
                  return <Item

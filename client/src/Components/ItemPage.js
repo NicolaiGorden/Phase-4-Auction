@@ -17,6 +17,7 @@ function ItemPage(props) {
         currency: 'USD',
     });
     const [newBid, setNewBid] = useState('')
+    const [highestBid, setHighestBid] = useState('')
 
     // NEW BID Form
     const [amount, setAmount] = useState('')
@@ -44,16 +45,15 @@ function ItemPage(props) {
             if(res.ok){
                 res.json().then((bid) => {
                     setNewBid(bid)
+                    setHighestBid((bid.amount))
                     let listCopy = [...itemList]
-                    console.log(listCopy)
                     let item = {...listCopy.find(i => i.id == id)}
                     let itemIndex = listCopy.findIndex(i => i.id == id)
-                    console.log(item)
-                    console.log(itemIndex)
+                    console.log(listCopy)
                     item.bids = item.bids.push(bid)
                     item.users = item.users.push(user)
-                    listCopy[itemIndex] = item
-
+                    item.highest_bid= amount
+                    listCopy[itemIndex] = item                    
                 })
             } else {
                 res.json().then((err) => setErrors(err.errors))
@@ -61,7 +61,12 @@ function ItemPage(props) {
         })
     }
 
+    useEffect(()=> {
+        setHighestBid(item?.highest_bid)
+    }, [])
+    
     useEffect(()=>{
+        setHighestBid(item?.highest_bid)
         setItem(itemList.find(i => i.id == id))
         setErrors([])
     }, [itemList])
@@ -72,10 +77,10 @@ function ItemPage(props) {
             <div class="auction-page-header">
                 <div class="list-item-mini">Auction for:</div>
                 <div class="list-item-h-space">
-                    <div class="list-item-name">{item.name}</div>
+                    <div class="list-item-name">{item?.name}</div>
                     <div class="auction-highest">
                         <div class="list-item-mini">highest bid:</div>
-                        <div class="auction-item-price">${item.highest_bid}</div>
+                        <div class="auction-item-price">${highestBid}</div>
                     </div>
                 </div>
             </div>
@@ -104,7 +109,7 @@ function ItemPage(props) {
             </div>
             <div class="bid-list">
                 {/* {(itemList.find(i => i.id == id).bids?.length > 0) ? */}               
-                {itemList ? 
+                {(itemList.length > 0 && item) ? 
                 itemList.find(i => i.id == id).bids.map((e)=> {
                     return <Bid
                         key={e.id}
