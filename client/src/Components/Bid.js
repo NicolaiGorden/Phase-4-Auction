@@ -52,7 +52,7 @@ function Bid({id, amount, userId, itemId, onBidDelete, item, name}) {
                         }
                     })
                     setItemList(listCopy)
-
+                    setErrors([])
                 })
             } else {
                 res.json().then((err) => setErrors(err.errors))
