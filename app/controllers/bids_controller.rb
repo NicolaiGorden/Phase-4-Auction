@@ -1,5 +1,4 @@
 class BidsController < ApplicationController
-    skip_before_action :authorized, only: [:index, :show, :create, :destroy, :update]
     def index
         bids = Bid.all
         render json: bids
