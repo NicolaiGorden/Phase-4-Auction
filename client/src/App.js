@@ -40,6 +40,7 @@ function App() {
 
   if(!user) return (
     <LoginContext.Provider value={[user, setUser]}>
+      <h1 class="title">EZ BID</h1>
       <Gate/>
     </LoginContext.Provider>
   )
@@ -50,6 +51,7 @@ function App() {
         <LoginContext.Provider value={[user, setUser]}>
           <BrowserRouter>
             <div className="App">
+              <h1 class="title">EZ BID</h1>
               <Navbar/>
               <Routes>
                 <Route path="/" element={<Items/>}/>

@@ -124,7 +124,7 @@ function ItemPage(props) {
                         userId={e.user_id}
                         itemId={item.id}
                         onBidDelete={onBidDelete}
-                        name={item?.users.find(i => i.id === e.user_id).username}
+                        name={e.username}
                     />
                 })
                 :

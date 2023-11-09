@@ -1,8 +1,6 @@
 class Bid < ApplicationRecord
     validates :amount, presence: true
     validate :amount, :exceeds_highest
-    validates :user_id, presence: true
-    validates :item_id, presence: true
     validates_uniqueness_of :user_id, scope: [:item_id], message: "already bid!"
 
     belongs_to :user
