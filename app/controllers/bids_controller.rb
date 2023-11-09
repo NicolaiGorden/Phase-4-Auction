@@ -28,7 +28,7 @@ class BidsController < ApplicationController
     def update
         bid = Bid.find_by(id: params[:id])
         if bid
-            if bid.valid?
+            if bid.update(bid_params)
                 bid.update(bid_params)
                 render json: bid
             else

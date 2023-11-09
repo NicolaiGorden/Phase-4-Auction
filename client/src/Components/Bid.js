@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { LoginContext } from '../App';
 import { ItemContext } from '../App';
-import { MyItemsContext } from '../App';
 
 function Bid({id, amount, userId, itemId, onBidDelete, item, name}) {
     const [user, setUser] = useContext(LoginContext)
