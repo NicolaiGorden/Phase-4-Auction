@@ -28,7 +28,8 @@ class BidsController < ApplicationController
     def update
         bid = Bid.find_by(id: params[:id])
         if bid
-            if bid.update(bid_params)
+            if bid.valid?
+                bid.update(bid_params)
                 render json: bid
             else
                 render json: { errors: bid.errors.full_messages }, status: :unprocessable_entity

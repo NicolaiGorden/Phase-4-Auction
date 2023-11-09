@@ -65,6 +65,7 @@ function Bid({id, amount, userId, itemId, onBidDelete, item, name}) {
         <div class="bid">
             <div class="bid-info">
                 <div class="bid-user">{user.id === userId ? `(YOU) ${name}'s` : `${name}'s`} bid:</div>
+                {errors ? errors.map((e, i) => <div class="update-error" key={i}>{e}</div>) : null}
                 <div class={user.id === userId ? "bid-amount-yours" : "bid-amount"}>
                     {editMode ?
                     <input 

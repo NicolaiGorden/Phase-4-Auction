@@ -13,7 +13,7 @@ class Bid < ApplicationRecord
             end
         else
             unless (amount > item.start_price)  
-            errors.add(:amount, message: "must exceed current highest bid!")
+                errors.add(:amount, message: "must exceed current highest bid!")
             end
         end
     end

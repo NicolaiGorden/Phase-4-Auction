@@ -180,3 +180,8 @@ code {
   left: 400px;
   top: 200px;
 }
+
+.update-error {
+  font-size: 11px;
+  margin-bottom: -15px;
+}
